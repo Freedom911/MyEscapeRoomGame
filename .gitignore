@@ -1,0 +1,15 @@
+##########################
+##Unreal Generated Files##
+##########################
+*/Build
+*/Binaries
+*/DerivedDataCache
+*/Intermediate/
+*/Saved
+RoomEscape/Content/StarterContent/
+
+
+##########################
+##VC Generated Files##
+##########################
+*.sdf
