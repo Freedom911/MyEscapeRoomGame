@@ -20,6 +20,12 @@ UPositionReport::UPositionReport()
 void UPositionReport::BeginPlay()
 {
 	Super::BeginPlay();
+	FString ObjectName = GetOwner()->GetActorLabel();
+	FString ObjectPosition= (GetOwner()->GetActorLocation().ToString());
+	
+	UE_LOG(LogTemp, Warning, TEXT("Bastardo  %s your are 1 2 %d gone "),*ObjectName,3);
+
+	UE_LOG(LogTemp, Warning, TEXT("Molto Bene this is  %s  "), *ObjectPosition);
 
 	// ...
 	
