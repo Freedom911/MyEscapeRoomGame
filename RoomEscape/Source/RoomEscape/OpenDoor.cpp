@@ -11,6 +11,7 @@ UOpenDoor::UOpenDoor()
 	// off to improve performance if you don't need them.
 	bWantsBeginPlay = true;
 	PrimaryComponentTick.bCanEverTick = true;
+	OpenAngle = -90.f;
 
 	// ...
 }
@@ -20,22 +21,25 @@ UOpenDoor::UOpenDoor()
 void UOpenDoor::BeginPlay()
 {
 	Super::BeginPlay();
-
-	AActor *Owner = GetOwner();
-
-	FString Rots = Owner->GetActorRotation().ToString();
-
-	UE_LOG(LogTemp, Error, TEXT("This is it %s"), *Rots)
-
-	float iYaw = Owner->GetActorRotation().Yaw;
-	float iRoll = Owner->GetActorRotation().Roll;
-	float iPitch = Owner->GetActorRotation().Pitch;
-	FRotator rRot(iPitch,-100,iRoll);
-	Owner->SetActorRotation(rRot);
-
 	   
-	// ...
+	ActorThatOpens = GetWorld()->GetFirstPlayerController()->GetPawn();
+
+	Owner = GetOwner();
 	
+}
+
+void UOpenDoor::OpenDoor()
+{
+	if(Owner)
+	Owner->SetActorRotation(FRotator(0, OpenAngle, 0));
+
+
+}
+
+void UOpenDoor::CloseDoor()
+{
+	if(Owner)
+	Owner->SetActorRotation(FRotator(0, 0, 0));
 }
 
 
@@ -44,6 +48,21 @@ void UOpenDoor::TickComponent( float DeltaTime, ELevelTick TickType, FActorCompo
 {
 	Super::TickComponent( DeltaTime, TickType, ThisTickFunction );
 
-	// ...
+	float CurrentTime = GetWorld()->GetTimeSeconds();
+
+	//Poll the Trigger Volume
+	//If the ActorThatOpen is in the Volume
+	if (PressurePlate->IsOverlappingActor(ActorThatOpens))
+	{
+		OpenDoor();
+		LastDoorOpenTime = CurrentTime;
+	}
+
+	//Continusouly check time if it is to close
+	if (CurrentTime - LastDoorOpenTime > DoorCloseDelay)
+	{
+		CloseDoor();
+	}
+
 }
 
