@@ -26,6 +26,24 @@ private:
 	 //How far we need to Draw Line
 	float Reach;
 
-		
+
+	UPhysicsHandleComponent* PhysicsHandle = nullptr;
+
+	UInputComponent *PawnInputComponent = nullptr;
+
+	//Function for grabbing things that appears in our ray
+	void Grab();
+
+	//Function for releasing grabbed things that appears in our ray
+	void GrabReleased();
+
+	//Finds if there is a phsyics Handle
+	void FindPhysicsHandle();
+
+	//setup input binding if input component found
+	void SetUpInputComponent();
+
+	//Returns Hit for first physics body in reach
+	const FHitResult GetFirstPhysicsBodyInReach();
 	
 };
